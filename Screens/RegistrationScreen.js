@@ -1,7 +1,57 @@
+import React, { useEffect, useState } from 'react';
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ImageBackground, 
+    StyleSheet, Text, 
+    TextInput, TouchableOpacity, 
+    View, KeyboardAvoidingView, 
+    Platform,  Dimensions, 
+    TouchableWithoutFeedback, Keyboard, Image
+} from "react-native"
+import * as ImagePicker from 'expo-image-picker';
 
-const RegistrationForm = () => {
+const initialState = {
+    login: "",
+    email: "",
+    password: "",
+}
+
+const width = Dimensions.get("window").width;
+
+const RegistrationForm = ({navigation}) => {
+    const [isSecureEntry, setIsSecureEntry] = useState(true);
+    const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+    const [registration, setRegistration] = useState(initialState);
+    const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        setIsShowKeyboard(false);
+    }, [handleSubmit]);
+    
+    const handleSubmit = () => {
+        Keyboard.dismiss();
+        setIsShowKeyboard(false);
+        console.log(registration )
+        setRegistration(initialState);
+    };
+    const closeKeyboard = () => {setIsShowKeyboard(false);
+        Keyboard.dismiss(); 
+    }
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+    });
+
+    if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+      else {
+        setImage(null)
+       }
+    };
 
     let [fontsLoaded] = useFonts({
         Roboto_400Regular,
@@ -13,47 +63,160 @@ const RegistrationForm = () => {
       }
 
     return(
-        <View style={styles.form}>
-            <View>
-             <Text style={styles.title}>Реєстрація</Text>
-              <TextInput style={styles.input} defaultValue='Логін'/>
-              <TextInput style={styles.input} defaultValue='Адреса електроної пошти'/>
-              <TextInput style={styles.input} defaultValue='Пароль'/>
-              <TouchableOpacity
-                    // onPress={buttonClickedHandler}
-                    style={styles.button}>
-                <Text style={styles.button_text}>Зареєструватися</Text>
-                </TouchableOpacity>
-              <Text style={styles.text}>Вже є акаунт? Увійти</Text>
+        <TouchableWithoutFeedback onPress={closeKeyboard}>
+        <View style={styles.container}>
+        <ImageBackground style={styles.image} source={require('../assets/Images/PhotoBG.png')}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={{...styles.form, marginBottom: isShowKeyboard ? 0.8 : 0.7}}>
+                <View style={{...styles.avatar,  left: (width - 120) / 2 }}>
+                <TouchableOpacity onPress={pickImage}>
+                   {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
+                   {!image && <Image
+                    fadeDuration={0}
+                    style={styles.add}
+                    source={require("../assets/Images/add.png")}
+                />}
+              
+                   { image && <Image
+                      fadeDuration={0}
+                      style={styles.remove} source={require('../assets/Images/addremove.png')} />}
+                 </TouchableOpacity>
+                    </View>    
+                  <Text style={styles.title}>Реєстрація</Text>
+                  <View style={{ ...styles.inputWrapper }}>
+                  <View>
+                    <TextInput 
+                         style={styles.input} 
+                         fontSize={16}
+                         autoCapitalize="none"
+                         autoCorrect={false}
+                         placeholder='Логін'
+                         value={registration.login}
+                         backgroundColor='#F6F6F6'
+                         onFocus={() => {setIsShowKeyboard(true)}}
+                         onChangeText={(value) => setRegistration((prevState) => ({...prevState, login: value}))}
+                         />
+                    </View>
+                    <TextInput 
+                        style={styles.input} 
+                        fontSize={16}
+                        autoCapitalize="none"
+                        value={registration.email}
+                        placeholder='Адреса електроної пошти'
+                        backgroundColor='#F6F6F6'
+                        onFocus={() => {setIsShowKeyboard(true)}}
+                        onChangeText={(value) => setRegistration((prevState) => ({...prevState, email: value}))}
+                    />
+                   <View>
+                        <TextInput 
+                             secureTextEntry={isSecureEntry} 
+                             style={styles.input} 
+                             fontSize={16}
+                             value={registration.password}
+                             autoCapitalize="none"
+                             autoCorrect={false}
+                             placeholder='Пароль'
+                             backgroundColor='#F6F6F6'
+                             onFocus={() => {setIsShowKeyboard(true)}}
+                             onChangeText={(value) =>
+                                setRegistration((prevState) => ({
+                                  ...prevState,
+                                  password: value,
+                                }))
+                              }
+                             />
+                        <Text
+                            onPress={() => {
+                                setIsSecureEntry((prev) => !prev);
+                                }}
+                            style={[{
+                                position: 'absolute',
+                                fontSize: 16,
+                                right: 30,
+                                marginVertical: 13,
+                                color: '#1B4371',                
+                            }]}>{isSecureEntry ? 'Показати' : 'Приховати'}
+                        </Text>
+                     </View>  
+                    </View>
+                   <TouchableOpacity
+                        style={{ ...styles.button, width: width - 32 }}
+                        activeOpacity={0.8}
+                        onPress={handleSubmit}
+                    >
+                    <Text style={styles.button_text}>Зареєструватися</Text>
+                    </TouchableOpacity>
+                    <View style={{
+                        }}>
+                        <Text style={styles.text}>Вже є акаунт?
+                            <Text> </Text>
+                            <Text style={styles.text_link}
+                            onPress={() => navigation.navigate("Login")}
+                            >Увійти</Text></Text>
+                    </View>
+                  
             </View>
+        </KeyboardAvoidingView>
+        </ImageBackground>
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 
 export default RegistrationForm
 
 const styles = StyleSheet.create({
-    form: {
+    container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
-        width: 375,
-        height: 549,
-        marginTop: 263,
-        boxShadow: '0 4 4 rgba(0, 0, 0, 0.25)',
+        backgroundColor: '#fff',
+      },
+      image: {
+        flex: 1,
+        justifyContent: 'center',
+        resizeMode: 'cover',
+        justifyContent: 'flex-end',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    form: {
+        backgroundColor: "#FFFFFF",
+        position: "relative",
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        // backgroundColor: '#FFFFFF',
+        // borderTopLeftRadius: 25,
+        // borderTopRightRadius: 25,
+    },
+    avatar: {
+        top: -60,
+        position: "absolute",
+        width: 120,
+        height: 120,
+        backgroundColor: "#F6F6F6",
+        borderRadius: 16,
+        zIndex:999
+        // width: 120,
+        // height: 120,
+        // borderRadius: 16,
+        // backgroundColor: '#F6F6F6',
+        // position: 'absolute',
+        // left: '34%',
+        // top: -60
+    },
+    inputWrapper: {
+        paddingRight: 16,
+        paddingLeft: 16,
+        paddingTop: 33,
+        paddingBottom: 43,
+        gap: 16,
     },
     title: {
-        width: 184,
-        height: 35,
         fontFamily: 'Roboto_500Medium',
         fontWeight: 500,
         fontSize: 30,
-        lineHeight: 35,
         textAlign: 'center',
         marginTop: 92,
         marginBottom: 32,
-        marginLeft: 16,
-        marginRight: 16,
-        alignSelf : "center",
         letterSpacing: 0.01,
         color: '#212121',
     },
@@ -64,29 +227,48 @@ const styles = StyleSheet.create({
         borderWidth: 1, 
         marginBottom: 16,
         borderRadius: 8,
+        marginHorizontal: 16,
     },
     button: {
-        alignItems: 'center',
-        paddingBottom: 16,
-        paddingTop: 16,
-        paddingLeft: 32,
-        paddingRight: 32,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        width: 343,
-        backgroundColor: '#FF6C00',
+        marginRight: 16,
+        marginLeft: 16,
+        height: 51,
+        backgroundColor: "#FF6C00",
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 100,
     },
     button_text:{
         fontFamily: 'Roboto_400Regular',
         fontSize: 16,
+        color: '#FFFFFF',
     },
     text: {
         marginTop: 16,
+        marginBottom: 20,
         fontWeight: 400,
         fontSize: 16,
         lineHeight: 19,
         textAlign: "center",
-        color: "#1B4371"
-    }
+        color: "#1B4371",
+        fontFamily: 'Roboto_400Regular',
+        marginBottom: 78,
+    },
+    text_link: {
+        fontSize: 16,
+        lineHeight: 19,
+        color: "#1B4371",
+        textDecorationLine: 'underline',
+    },
+    add: {
+        position: "absolute",
+       top: 81,
+       right: -10,
+       
+     },
+     remove: {
+       position: "absolute",
+       top: 81,
+       right: -18,
+    },
 })
