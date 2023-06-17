@@ -65,21 +65,21 @@ const RegistrationForm = ({navigation}) => {
     return(
         <TouchableWithoutFeedback onPress={closeKeyboard}>
         <View style={styles.container}>
-        <ImageBackground style={styles.image} source={require('../assets/Images/PhotoBG.png')}>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={{...styles.form, marginBottom: isShowKeyboard ? 0.8 : 0.7}}>
+        <ImageBackground style={styles.image} source={require('../../assets/Images/PhotoBG.png')}>
+        <KeyboardAvoidingView  style={styles.containerKeyboardAvoidingView} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={{...styles.form, paddingBottom: isShowKeyboard ? 0 : 78 }}>
                 <View style={{...styles.avatar,  left: (width - 120) / 2 }}>
                 <TouchableOpacity onPress={pickImage}>
                    {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
                    {!image && <Image
                     fadeDuration={0}
                     style={styles.add}
-                    source={require("../assets/Images/add.png")}
+                    source={require("../../assets/Images/add.png")}
                 />}
               
                    { image && <Image
                       fadeDuration={0}
-                      style={styles.remove} source={require('../assets/Images/addremove.png')} />}
+                      style={styles.remove} source={require('../../assets/Images/addremove.png')} />}
                  </TouchableOpacity>
                     </View>    
                   <Text style={styles.title}>Реєстрація</Text>
@@ -172,20 +172,17 @@ const styles = StyleSheet.create({
       },
       image: {
         flex: 1,
-        justifyContent: 'center',
-        resizeMode: 'cover',
         justifyContent: 'flex-end',
+        resizeMode: 'cover',
+
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
     form: {
-        backgroundColor: "#FFFFFF",
-        position: "relative",
+        backgroundColor: "#fff",
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        // backgroundColor: '#FFFFFF',
-        // borderTopLeftRadius: 25,
-        // borderTopRightRadius: 25,
+        alignItems: "center",
     },
     avatar: {
         top: -60,
@@ -195,20 +192,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#F6F6F6",
         borderRadius: 16,
         zIndex:999
-        // width: 120,
-        // height: 120,
-        // borderRadius: 16,
-        // backgroundColor: '#F6F6F6',
-        // position: 'absolute',
-        // left: '34%',
-        // top: -60
     },
     inputWrapper: {
-        paddingRight: 16,
-        paddingLeft: 16,
-        paddingTop: 33,
-        paddingBottom: 43,
+        marginHorizontal: 30,
         gap: 16,
+        paddingTop: 32,
+        paddingBottom: 43,
     },
     title: {
         fontFamily: 'Roboto_500Medium',
@@ -216,18 +205,16 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         marginTop: 92,
-        marginBottom: 32,
         letterSpacing: 0.01,
         color: '#212121',
     },
     input: {
+        width: 343,
         height: 50,
-        padding:16,
-        borderColor: '#E8E8E8',
-        borderWidth: 1, 
-        marginBottom: 16,
+        padding: 16,
+        borderWidth: 1,
         borderRadius: 8,
-        marginHorizontal: 16,
+        borderColor: '#E8E8E8',
     },
     button: {
         marginRight: 16,
@@ -245,14 +232,12 @@ const styles = StyleSheet.create({
     },
     text: {
         marginTop: 16,
-        marginBottom: 20,
         fontWeight: 400,
         fontSize: 16,
         lineHeight: 19,
         textAlign: "center",
         color: "#1B4371",
         fontFamily: 'Roboto_400Regular',
-        marginBottom: 78,
     },
     text_link: {
         fontSize: 16,
@@ -270,5 +255,8 @@ const styles = StyleSheet.create({
        position: "absolute",
        top: 81,
        right: -18,
+    },
+    containerKeyboardAvoidingView: {
+        justifyContent: "flex-end",
     },
 })

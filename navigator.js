@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
-import RegistrationForm from './Screens/RegistrationsScreen';
+import RegistrationForm from './Screens/auth/RegistrationsScreen';
 // import LoginForm from './Screens/LoginScreen';
 
 

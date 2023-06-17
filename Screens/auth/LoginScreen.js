@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react';
 import { Pressable, StyleSheet, 
     Text, TextInput, TouchableOpacity, 
     View,  Dimensions, TouchableWithoutFeedback, 
-    Keyboard, ImageBackground
+    Keyboard, ImageBackground, KeyboardAvoidingView
 } from 'react-native';
 
 const intialState = {
@@ -42,37 +42,38 @@ const LoginForm = ({navigation})=> {
     if (!fontsLoaded) {
       return null;
     }
+
     return(
-        <TouchableWithoutFeedback
-        onPress={closeKeyboard}
-      >
-        <View style={styles.form}>
-        <ImageBackground style={styles.image} source={require('../assets/Images/PhotoBG.png')}>
-            <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.65 : 0.6 }}>
-               <Text style={styles.title}>Увійти</Text>
-               <View style={{ ...styles.inputWrapper }}>
+        <TouchableWithoutFeedback onPress={closeKeyboard}>
+        <View style={styles.container}>
+        <ImageBackground style={styles.image} source={require('../../assets/Images/PhotoBG.png')}>
+        <KeyboardAvoidingView  style={styles.containerKeyboardAvoidingView} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={{...styles.form, paddingBottom: isShowKeyboard ? 0 : 100 }}>
+                  <Text style={styles.title}>Увійти</Text>
+                  <View style={{ ...styles.inputWrapper }}>
                     <View>
-                        <TextInput 
-                             style={styles.input} 
-                             autoCorrect={false}
-                             inputmode='email' 
-                             value={registration.email}
-                             onChangeText={(value) =>
-                                setRegistration((prevState) => ({
-                                  ...prevState,
-                                  email: value,
-                                }))
-                              }
-                             placeholder='Адреса електроної пошти'/>
+                    <TextInput 
+                        style={styles.input} 
+                        fontSize={16}
+                        autoCapitalize="none"
+                        value={registration.email}
+                        placeholder='Адреса електроної пошти'
+                        backgroundColor='#F6F6F6'
+                        onFocus={() => {setIsShowKeyboard(true)}}
+                        onChangeText={(value) => setRegistration((prevState) => ({...prevState, email: value}))}
+                    />
                     </View>
                     <View>
                         <TextInput 
                              secureTextEntry={isSecureEntry} 
                              style={styles.input} 
+                             fontSize={16}
+                             value={registration.password}
                              autoCapitalize="none"
                              autoCorrect={false}
-                             value={registration.password}
                              placeholder='Пароль'
+                             backgroundColor='#F6F6F6'
+                             onFocus={() => {setIsShowKeyboard(true)}}
                              onChangeText={(value) =>
                                 setRegistration((prevState) => ({
                                   ...prevState,
@@ -80,28 +81,27 @@ const LoginForm = ({navigation})=> {
                                 }))
                               }
                              />
-                        <Pressable
+                        <Text
                             onPress={() => {
                                 setIsSecureEntry((prev) => !prev);
                                 }}
                             style={[{
                                 position: 'absolute',
+                                fontSize: 16,
                                 right: 30,
-                                marginVertical: 15,
-                                opacity: 0.8,
-                                                                
-                            }]}>
-                            <Text>{isSecureEntry ? 'Показати' : 'Приховати'}</Text>
-                        </Pressable>
+                                marginVertical: 13,
+                                color: '#1B4371',                
+                            }]}>{isSecureEntry ? 'Показати' : 'Приховати'}
+                        </Text>
                     </View>
                     </View>
-                        <TouchableOpacity
-                           style={{ ...styles.button, width: width - 32 }}
-                           activeOpacity={0.8}
-                           onPress={handleSubmit}
-                        >
-                        <Text style={styles.button_text}>Увійти</Text>
-                        </TouchableOpacity>
+                   <TouchableOpacity
+                        style={{ ...styles.button, width: width - 32 }}
+                        activeOpacity={0.8}
+                        onPress={handleSubmit}
+                    >
+                    <Text style={styles.button_text}>Увійти</Text>
+                    </TouchableOpacity>
                     <View style={{ 
                         alignItems: 'center',
                         display: 'flex',
@@ -110,72 +110,62 @@ const LoginForm = ({navigation})=> {
                         <Text> </Text>
                             <Text style={styles.text_link}
                             onPress={() => navigation.navigate("Registration")}
-                            >Зареєструватися</Text>
-                        </Text>
+                            >Зареєструватися</Text></Text>
                     </View>
+                  
             </View>
+        </KeyboardAvoidingView>
         </ImageBackground>
         </View>
-        </TouchableWithoutFeedback> 
+        </TouchableWithoutFeedback>
     )
-
 }
 
 export default LoginForm
 
 const styles = StyleSheet.create({
-    form: {
+    container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
-        height: 489,
-        // borderTopLeftRadius: 25,
-        // borderTopRightRadius: 25,
-        justifyContent: 'flex-end',
-        position: 'relative',
+        backgroundColor: '#fff',
     },
     image: {
         flex: 1,
-        justifyContent: 'center',
-        resizeMode: 'cover',
         justifyContent: 'flex-end',
+        resizeMode: 'cover',
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
-    wrapper: {
+    containerKeyboardAvoidingView: {
+        justifyContent: "flex-end",
+    },
+    form: {
         backgroundColor: "#FFFFFF",
-        position: "relative",
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
+        alignItems: "center",
     },
     title: {
         fontFamily: 'Roboto_500Medium',
-        fontWeight: 500,
         textAlign: "center",
         color: "#212121",
         paddingTop: 32,
         fontSize: 30,
-        // fontSize: 30,
-        // textAlign: 'center',
-        // marginTop: 92,
-        // marginBottom: 32,
-        // letterSpacing: 0.01,
-        // color: '#212121',
-    },
-    input: {
-        height: 50,
-        padding:16,
-        borderColor: '#E8E8E8',
-        borderWidth: 1, 
-        marginBottom: 16,
-        borderRadius: 8,
-        marginHorizontal: 16,
+        fontWeight: 500,
     },
     inputWrapper: {
         paddingRight: 16,
         paddingLeft: 16,
         paddingTop: 33,
-        // paddingBottom: 43,
-        // gap: 16,
+        paddingBottom: 43,
+        gap: 16,
+    },
+    input: {
+        width: 343,
+        height: 50,
+        padding: 16,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: '#E8E8E8',
     },
     button: {
         marginRight: 16,
@@ -188,18 +178,11 @@ const styles = StyleSheet.create({
     },
     button_text:{
         fontFamily: 'Roboto_400Regular',
-        color: "#FFFFFF",
-        textAlign: "center",
-        // textAlign: "center",
-        // color: "#212121",
-        // paddingTop: 32,
-        // fontSize: 30,
-        // fontSize: 16,
-        // color: '#FFFFFF',
+        fontSize: 16,
+        color: '#FFFFFF',
     },
     text: {
         marginTop: 16,
-        marginBottom: 144,
         fontWeight: 400,
         fontSize: 16,
         lineHeight: 19,
@@ -212,5 +195,8 @@ const styles = StyleSheet.create({
         lineHeight: 19,
         color: "#1B4371",
         textDecorationLine: 'underline',
-    }
+    },
 })
+
+
+  
