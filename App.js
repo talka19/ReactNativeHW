@@ -1,23 +1,45 @@
-import React from 'react';
-import { NavigationContainer } from "@react-navigation/native";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RegistrationForm from './Screens/auth/RegistrationScreen';
-import LoginForm from './Screens/auth/LoginScreen';
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
 
-const Stack = createNativeStackNavigator();
+import { Provider } from "react-redux";
+import MainComponent from "./redux/MainComponent";
+import { useCallback } from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { View, StyleSheet } from "react-native";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Roboto-Regulat": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
-
+  if (!fontsLoaded) {
+    return;
+  }
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Registration" component={RegistrationForm} />
-        <Stack.Screen name="Login" component={LoginForm} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <MainComponent />
+        </View>
+      </PersistGate>
+    </Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 
 
