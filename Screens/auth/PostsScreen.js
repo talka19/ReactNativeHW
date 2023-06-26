@@ -9,7 +9,6 @@ import {
   Image,
   TouchableOpacity, Dimensions
 } from "react-native";
-// import * as ImagePicker from 'expo-image-picker';
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
 import {
@@ -32,14 +31,6 @@ const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [image, setImage] = useState(null);
 
-  // const pickImage = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   })};
-
   const { email, displayImg, displayName } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -59,7 +50,6 @@ const PostsScreen = ({ navigation }) => {
       const cities = [];
       querySnapshot.forEach(async (doc) => {
         const total = await getAllComments(doc.id);
-        // console.log(total, "total")
         cities.push({
           ...doc.data(),
           id: doc.id,
@@ -74,18 +64,6 @@ const PostsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.prifileContainer}>
       <Image style={styles.prifileImg} source={{ uri: displayImg }} />
-      {/* <TouchableOpacity onPress={pickImage}>
-                   {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-                   {!image && <Image
-                    fadeDuration={0}
-                    style={styles.add}
-                    source={require("../../assets/Images/add.png")}
-                />}
-              
-                   { image && <Image
-                      fadeDuration={0}
-                      style={styles.remove} source={require('../../assets/Images/addremove.png')} />}
-                 </TouchableOpacity> */}
         <View style={styles.prifileText}>
             
           <Text>{displayName}</Text>
@@ -165,17 +143,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
 },
-  // image: {
-  //   width: "100%",
-  //   height: 240,
-  //   marginBottom: 8,
-  //   borderRadius: 8,
-  // },
   postContainer: {
     width: "100%",
     paddingHorizontal: 16,
     marginTop: 32,
-    // marginHorizontal: 16,
   },
   title: {
     fontSize: 16,

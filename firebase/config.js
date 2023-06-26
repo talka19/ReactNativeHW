@@ -1,16 +1,9 @@
-// import * as firebase from "firebase"
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-// /*
+
 // // Для роботи із firebase обовʼязково треба ініціалізувати проект
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// Функція для підключення авторизації в проект
-// // Функція для підключення бази даних у проект
-// // Функція для підключення сховища файлів в проект
-// import AsyncStorage from '@react-native-community/async-storage';
-// import "firebase/auth"
 
 const firebaseConfig = {
     apiKey: "AIzaSyD01q0KLkO0lhJm4QiqeO8mkwvMpBhrhwk",
@@ -23,13 +16,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-// console.log(storage, 'firstore')
-
-// export default firebase;
-
-// */

@@ -41,7 +41,6 @@ const state = {
 };
 
 const ProfileScreen = ({ navigation }) => {
-//   const image = require("../../../assets/");
 
   const [posts, setPosts] = useState([]);
   const [image, setImage] = useState(null);
@@ -213,13 +212,11 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   formContainer: {
-    // flex: 1,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
     justifyContent: "flex-end",
-    // marginTop: 300,
   },
   image: {
     flex: 1,
@@ -230,13 +227,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   h1: {
-    // fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
     letterSpacing: 0.01,
     color: "#212121",
-    // fontFamily: "Roboto-Bold",
   },
   input: {
     backgroundColor: "#F6F6F6",
@@ -244,7 +239,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     marginTop: 16,
-    // fontFamily: "Roboto-Regulat",
     fontSize: 16,
     lineHeight: 19,
     color: "#212121",
@@ -261,13 +255,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    // fontFamily: "Roboto-Regulat",
     fontSize: 16,
     lineHeight: 19,
   },
   login: {
     color: "#1B4371",
-    // fontFamily: "Roboto-Regulat",
     fontSize: 16,
     lineHeight: 19,
     alignItems: "center",
@@ -280,7 +272,6 @@ const styles = StyleSheet.create({
   },
   showPassText: {
     color: "#1B4371",
-    // fontFamily: "Roboto-Regulat",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -327,7 +318,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#212121",
-    // fontFamily: "Roboto-Bold",
   },
   commentsContainer: { flexDirection: "row" },
   locationContainer: { flexDirection: "row" },
@@ -338,17 +328,4 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  // prifileContainer: {
-  //   width: "100%",
-  //   paddingLeft: 16,
-  //   display: "flex",
-  //   flexDirection: "row",
-  //   marginTop: 32,
-  //   alignItems: "center",
-  //   justifyContent: "flex-start",
-  // },
-  // prifileImg: {
-  //   width: 60,
-  //   height: 60,
-  // },
 });

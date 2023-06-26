@@ -17,7 +17,6 @@ import {
 } from "react-native";
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
-// import * as ImagePicker from 'expo-image-picker';
 import { collection, query, doc, addDoc, onSnapshot } from "firebase/firestore";
 
 const state = {
@@ -35,14 +34,6 @@ const CommentsScreen = ({ route}) => {
   const [comments, setComments] = useState([]);
   const height = useHeaderHeight();
   const { photoRef, id } = route.params;
-
-    // const pickImage = async () => {
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //   allowsEditing: true,
-    //   aspect: [4, 3],
-    //   quality: 1,
-    // })};
 
   const { userId, displayName, displayImg } = useSelector(
     (state) => state.auth
@@ -88,18 +79,6 @@ const CommentsScreen = ({ route}) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
           <View style={styles.postContainer}>
-          {/* <TouchableOpacity onPress={pickImage}>
-                   {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-                   {!image && <Image
-                    fadeDuration={0}
-                    style={styles.add}
-                    source={require("../../assets/Images/add.png")}
-                />}
-              
-                   { image && <Image
-                      fadeDuration={0}
-                      style={styles.remove} source={require('../../assets/Images/addremove.png')} />}
-                 </TouchableOpacity> */}
             <Image style={styles.img} source={{ uri: photoRef }} />
           </View>
           <FlatList
@@ -124,18 +103,6 @@ const CommentsScreen = ({ route}) => {
                   <Text style={styles.data}>{item.data}</Text>
                 </View>
                 <View>
-                {/* <TouchableOpacity onPress={pickImage}>
-                   {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-                   {!image && <Image
-                    fadeDuration={0}
-                    style={styles.add}
-                    source={require("../../assets/Images/add.png")}
-                />}
-              
-                   { image && <Image
-                      fadeDuration={0}
-                      style={styles.remove} source={require('../../assets/Images/addremove.png')} />}
-                 </TouchableOpacity>  */}
                   <Image
                     source={{ uri: item.displayImg }}
                     style={{ width: 28, height: 28, marginTop: 16 }}
@@ -187,7 +154,6 @@ const styles = StyleSheet.create({
   postContainer: {
     width: "100%",
     marginTop: 32,
-    // marginHorizontal: 16,
   },
   input: {
     backgroundColor: "#F6F6F6",

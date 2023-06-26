@@ -24,14 +24,14 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const  RegistrationForm = ({ navigation }) => {
   const userSchema = object({
-    name: string().required("Обязательное поле").min(3, "Не мение 3 символов"),
+    name: string().required("Обов'язкове поле").min(3, "Не менше 3 символів"),
     email: string()
       .email("Invalid Email")
-      .min(6, "Не мение 6 символов")
-      .required("Обязательное поле"),
+      .min(6, "Не менше 6 символів")
+      .required("Обов'язкове поле"),
     password: string()
-      .required("Обязательное поле")
-      .min(6, "Не мение 6 символов"),
+      .required("Обов'язкове поле")
+      .min(6, "Не менше 6 символів"),
   });
 
   const dispatch = useDispatch();
@@ -216,7 +216,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   h1: {
-    // fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -270,11 +269,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-//   errorText: {
-//     color: "#ff0000",
-//     textAlign: "center",
-//     marginTop: 4,
-//   },
+  errorText: {
+    color: "#ff0000",
+    textAlign: "center",
+    marginTop: 4,
+  },
   avatar: {
     width: 120,
     height: 120,

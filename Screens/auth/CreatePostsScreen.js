@@ -12,7 +12,6 @@ import {
   Platform,
   Alert,
 } from "react-native";
-// import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { Entypo } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
@@ -41,7 +40,6 @@ const CreatePostsScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [location, setLocation] = useState(null);
-//   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
   const height = useHeaderHeight();
@@ -221,23 +219,6 @@ const CreatePostsScreen = ({ navigation }) => {
             onChangeText={locationTextHandler}
           />
           </View>
-          
-          {/* <View style={{display: 'flex'}}>
-          <TouchableOpacity onPress={handleLocationIconPress}>
-            <Feather
-              style={styles.containerInputIcon}
-              name="map-pin"
-              size={24}
-              color="#BDBDBD"
-            />
-            </TouchableOpacity>
-            <TextInput
-              placeholder="Місцевість..."
-              value={locationText}
-              style={{ ...styles.input, paddingLeft: 30 }}
-              onChangeText={locationTextHandler}
-            />
-          </View> */}
           <TouchableOpacity
             onPress={onPublishPost}
             style={{
@@ -279,9 +260,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    // fontFamily: "Roboto-Regulat",
     fontSize: 16,
-    // fontFamily: "Roboto-Regulat",
     lineHeight: 19,
   },
   iconContainer: {
@@ -303,31 +282,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    // fontFamily: "Roboto",
-    // fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
     color: "#BDBDBD",
     marginTop: 8,
-    // alignItems: "flex-start",
     justifyContent: "flex-start",
-    // fontFamily: "Roboto-Regulat",
     textAlign: "left",
   },
   input: {
     color: "#212121",
-    // fontFamily: "Roboto",
     fontSize: 16,
     lineHeight: 19,
     borderBottomColor: "#BDBDBD",
     borderBottomWidth: 1,
     marginTop: 16,
     padding: 16,
-    // fontFamily: "Roboto-Regulat",
   },
   containerInputLocation: {
-    flexDirection: 'row', // Додайте це властивість
-    alignItems: 'center', // Це забезпечить вертикальне центрування елементів
+    flexDirection: 'row', 
+    alignItems: 'center', 
     borderBottomColor: "#BDBDBD",
     borderBottomWidth: 1,
     marginTop: 16,
@@ -337,7 +310,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   inputLocation: {
-    flex: 1, // Займіть залишок доступного простору
+    flex: 1, 
     color: "#212121",
     fontSize: 16,
     lineHeight: 19,
@@ -350,6 +323,5 @@ const styles = StyleSheet.create({
     marginTop: 32,
     justifyContent: "center",
     alignItems: "center",
-    // fontFamily: "Roboto-Regulat",
   },
 });

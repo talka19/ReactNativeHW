@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   h1: {
-    // fontWeight: 500,
     fontFamily: "Roboto-Bold",
     fontSize: 30,
     lineHeight: 35,
@@ -160,7 +159,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.01,
     color: "#212121",
     marginTop: 92,
-    // marginBottom: 32,
   },
   input: {
     marginHorizontal: 32,

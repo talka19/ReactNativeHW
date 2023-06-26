@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegistrationForm from './Screens/auth/RegistrationScreen';
 import LoginForm from './Screens/auth/LoginScreen';
 import Home from './Screens/auth/Home';
-// import { PostsScreen } from './Screens/auth/PostsScreen'
 import CommentsScreen from "./Screens/auth/CommentsScreen"
 import MapScreen from './Screens/auth/MapScreen'
 
