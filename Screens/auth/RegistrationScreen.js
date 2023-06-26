@@ -37,10 +37,7 @@ const  RegistrationForm = ({ navigation }) => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
   const [showPass, setShowPass] = useState(true);
-  const [userImg, setUserImg] = useState(
-    "https://w7.pngwing.com/pngs/555/703/png-transparent-computer-icons-avatar-woman-user-avatar-face-heroes-service-thumbnail.png"
-  );
-
+  const [userImg, setUserImg] = useState("https://cdn1.iconfinder.com/data/icons/website-internet/48/website_-_female_user-512.png");
   const image = require("../../assets/Images/PhotoBG.png");
 
   const onSubmit = async ({ name, email, password }) => {

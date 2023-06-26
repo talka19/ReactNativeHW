@@ -13,6 +13,7 @@ import {
   Alert,
 } from "react-native";
 // import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 import { Entypo } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
@@ -35,8 +36,8 @@ const state = {
 const CreatePostsScreen = ({ navigation }) => {
   const [locationText, setLocationText] = useState("");
   const [titleText, setTitleText] = useState("");
-  const locationTextHandler = (text) => setLocationText(text);
   const titleTextHandler = (text) => setTitleText(text);
+  const locationTextHandler = (text) => setLocationText(text);
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [location, setLocation] = useState(null);
@@ -81,6 +82,31 @@ const CreatePostsScreen = ({ navigation }) => {
       setLocation(coords);
     })();
   }, []);
+  
+  const handleLocationIconPress = async () => {
+    if (!location) {
+      console.log('Location not available');
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.latitude}&lon=${location.longitude}`
+      );
+
+      const { address } = response.data;
+      console.log(address, 'address')
+      const cityName = 
+      address.city ? `${address.city}, ${address.country}`
+      : address.state ? `${address.state}, ${address.country}`
+      : address.village ? `${address.village}, ${address.country}`
+      : address.county ? `${address.county}, ${address.country}`
+      : '';
+      setLocationText(cityName);
+    } catch (error) {
+      console.log('Error getting reverse geocode', error);
+    }
+  };
 
   const onPublishPost = async () => {
     if (!photo) {
@@ -114,6 +140,8 @@ const CreatePostsScreen = ({ navigation }) => {
     });
     resetForm();
   };
+
+
   const uploadPostToDatabase = async (post) => {
     try {
       const docRef = await addDoc(collection(db, "post"), post);
@@ -122,11 +150,14 @@ const CreatePostsScreen = ({ navigation }) => {
       console.error("Error adding document: ", e);
     }
   };
+
   const resetForm = () => {
     setPhoto(null);
     setLocationText("");
     setTitleText("");
   };
+
+
   return (
     <KeyboardAvoidingView
       style={styles.inner}
@@ -173,20 +204,40 @@ const CreatePostsScreen = ({ navigation }) => {
             style={styles.input}
             onChangeText={titleTextHandler}
           />
-          <View>
-            <TextInput
-              value={locationText}
-              onChangeText={locationTextHandler}
-              placeholder="Місцевість..."
-              style={{ ...styles.input, paddingLeft: 30 }}
-            />
+
+          <View style={styles.containerInputLocation}>
+          <TouchableOpacity onPress={handleLocationIconPress}>
             <Feather
               style={styles.containerInputIcon}
               name="map-pin"
               size={24}
               color="#BDBDBD"
             />
+          </TouchableOpacity>
+          <TextInput
+            placeholder="Місцевість..."
+            style={styles.inputLocation}
+            value={locationText}
+            onChangeText={locationTextHandler}
+          />
           </View>
+          
+          {/* <View style={{display: 'flex'}}>
+          <TouchableOpacity onPress={handleLocationIconPress}>
+            <Feather
+              style={styles.containerInputIcon}
+              name="map-pin"
+              size={24}
+              color="#BDBDBD"
+            />
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Місцевість..."
+              value={locationText}
+              style={{ ...styles.input, paddingLeft: 30 }}
+              onChangeText={locationTextHandler}
+            />
+          </View> */}
           <TouchableOpacity
             onPress={onPublishPost}
             style={{
@@ -274,9 +325,22 @@ const styles = StyleSheet.create({
     padding: 16,
     // fontFamily: "Roboto-Regulat",
   },
+  containerInputLocation: {
+    flexDirection: 'row', // Додайте це властивість
+    alignItems: 'center', // Це забезпечить вертикальне центрування елементів
+    borderBottomColor: "#BDBDBD",
+    borderBottomWidth: 1,
+    marginTop: 16,
+    padding: 16,
+  },
   containerInputIcon: {
-    position: "relative",
-    top: -40,
+    marginRight: 8,
+  },
+  inputLocation: {
+    flex: 1, // Займіть залишок доступного простору
+    color: "#212121",
+    fontSize: 16,
+    lineHeight: 19,
   },
   button: {
     borderRadius: 100,

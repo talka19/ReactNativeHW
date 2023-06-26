@@ -29,11 +29,10 @@ const state = {
     error: null,
 };
 
-const CommentsScreen = ({ }) => {
+const CommentsScreen = ({ route}) => {
   const titleTextHandler = (text) => setText(text);
   const [text, setText] = useState("");
   const [comments, setComments] = useState([]);
-//   console.log("🚀 ~ comments:", comments);
   const height = useHeaderHeight();
   const { photoRef, id } = route.params;
 

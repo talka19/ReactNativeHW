@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity, Dimensions
 } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
+// import * as ImagePicker from 'expo-image-picker';
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
 import {
@@ -32,13 +32,13 @@ const PostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [image, setImage] = useState(null);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    })};
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   })};
 
   const { email, displayImg, displayName } = useSelector((state) => state.auth);
 
@@ -59,6 +59,7 @@ const PostsScreen = ({ navigation }) => {
       const cities = [];
       querySnapshot.forEach(async (doc) => {
         const total = await getAllComments(doc.id);
+        // console.log(total, "total")
         cities.push({
           ...doc.data(),
           id: doc.id,
@@ -92,65 +93,55 @@ const PostsScreen = ({ navigation }) => {
         </View>
       </View>
       <FlatList
-        style={styles.postContainer}
-        data={posts}
-        keyExtractor={(item) => item.id}
-        totalComments={(item) => getAllComments(item.id)}
-        renderItem={({ item }) => (
-          <View style={{ marginBottom: 32 }}>
-            {/* <TouchableOpacity onPress={pickImage}>
-                   {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-                   {!image && <Image
-                    fadeDuration={0}
-                    style={styles.add}
-                    source={require("../../assets/Images/add.png")}
-                />}
-              
-                   { image && <Image
-                      fadeDuration={0}
-                      style={styles.remove} source={require('../../assets/Images/addremove.png')} />}
-                 </TouchableOpacity> */}
-            <Image style={styles.img} source={{ uri: item.photoRef }} />
-            <View style={styles.discrContainer}>
-              <Text style={styles.title}>{item.titleText}</Text>
-              <View style={styles.containerDown}>
-                <TouchableOpacity
-                  style={styles.commentsContainer}
-                  onPress={() => {
-                    navigation.navigate("CommentsScreen", {
-                      ...item,
-                    });
-                  }}
-                >
-                  <FontAwesome
-                    style={styles.iconComments}
-                    name="comment-o"
-                    size={24}
-                    color="#BDBDBD"
-                  />
-                  <Text>{item.total}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.locationContainer}
-                  onPress={() => {
-                    navigation.navigate("MapScreen", {
-                      ...item,
-                    });
-                  }}
-                >
-                  <Feather
-                    style={styles.iconLocation}
-                    name="map-pin"
-                    size={24}
-                    color="#BDBDBD"
-                  />
-                  <Text style={{ color: "#BDBDBD" }}>{item.locationText}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
-      ></FlatList>
+                style={styles.postContainer}
+                data={posts}
+                keyExtractor={(item) => item.id}
+                totalComments={(item) => getAllComments(item.id)}
+                renderItem={({ item }) => (
+                  <View style={{ marginBottom: 32 }}>
+                    <Image style={styles.img} source={{ uri: item.photoRef }}/>
+                    <View style={styles.discrContainer}>
+                      <Text style={styles.title}>{item.titleText}</Text>
+                      <View style={styles.containerDown}>
+                        <TouchableOpacity
+                          style={styles.commentsContainer}
+                          onPress={() => {
+                            navigation.navigate("CommentsScreen", {
+                              ...item,
+                            });
+                          }}
+                        >
+                          <FontAwesome
+                            style={styles.iconComments}
+                            name="comment-o"
+                            size={24}
+                            color="#BDBDBD"
+                          />
+                          <Text>{item.total}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.locationContainer}
+                          onPress={() => {
+                            navigation.navigate("MapScreen", {
+                              ...item,
+                            });
+                          }}
+                        >
+                          <Feather
+                            style={styles.iconLocation}
+                            name="map-pin"
+                            size={24}
+                            color="#BDBDBD"
+                          />
+                          <Text style={{ color: "#BDBDBD" }}>
+                            {item.locationText}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              ></FlatList>
     </View>
   );
 };
@@ -213,5 +204,11 @@ const styles = StyleSheet.create({
   prifileImg: {
     width: 60,
     height: 60,
+  },
+  img: {
+    width: "100%",
+    height: 240,
+    marginBottom: 8,
+    borderRadius: 8,
   },
 });

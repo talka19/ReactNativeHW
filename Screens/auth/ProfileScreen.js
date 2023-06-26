@@ -3,7 +3,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { authSignOutUser, authSignUpUser } from "../../redux/operations";
+import { authSignOutUser } from "../../redux/operations";
 import {
   StyleSheet,
   View,
@@ -21,6 +21,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import * as ImagePicker from 'expo-image-picker';
 import { db } from "../../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebase/config";
 import {
   collection,
   query,
@@ -43,6 +45,7 @@ const ProfileScreen = ({ navigation }) => {
 
   const [posts, setPosts] = useState([]);
   const [image, setImage] = useState(null);
+  const [userImg, setUserImg] = useState();
   const dispatch = useDispatch();
   const { email, userId, displayImg, displayName } = useSelector(
     (state) => state.auth
@@ -81,6 +84,21 @@ const ProfileScreen = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
    });
+   if (!result.canceled) {
+    const ref = await uploadPhotoToServer(result.assets[0].uri);
+    setUserImg(ref);
+  }
+  };
+
+  const uploadPhotoToServer = async (img) => {
+    const response = await fetch(img);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const storageRef = await ref(storage, `userImage/${uniquePostId}`);
+    await uploadBytes(storageRef, file);
+    const procesedPhoto = await getDownloadURL(storageRef);
+    console.log(procesedPhoto, "procesedPhoto");
+    return procesedPhoto;
   };
 
   return (
@@ -109,7 +127,7 @@ const ProfileScreen = ({ navigation }) => {
                     margin: 0,
                     padding: 0,
                     top: 12,
-                  }}
+                  }} onLoad={() => console.log("Image loaded:", displayImg)}
                 />
                 <TouchableOpacity style={styles.imgAdd}>
                   <AntDesign
@@ -195,12 +213,13 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   formContainer: {
+    // flex: 1,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
-    justifyContent: "flex-start",
-    marginTop: 300,
+    justifyContent: "flex-end",
+    // marginTop: 300,
   },
   image: {
     flex: 1,
@@ -319,17 +338,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  prifileContainer: {
-    width: "100%",
-    paddingLeft: 16,
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 32,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  prifileImg: {
-    width: 60,
-    height: 60,
-  },
+  // prifileContainer: {
+  //   width: "100%",
+  //   paddingLeft: 16,
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   marginTop: 32,
+  //   alignItems: "center",
+  //   justifyContent: "flex-start",
+  // },
+  // prifileImg: {
+  //   width: 60,
+  //   height: 60,
+  // },
 });

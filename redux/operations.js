@@ -26,7 +26,7 @@ import {
         );
       } catch (error) {
         dispatch(authError(error.message));
-        console.log("error.message1", error.message);
+        console.log("error.message", error.message);
       }
     };
   
@@ -53,7 +53,7 @@ import {
           })
         );
       } catch (error) {
-        console.log("error.message2", error.message);
+        console.log("error.message", error.message);
         dispatch(authError(error.message));
       }
     };

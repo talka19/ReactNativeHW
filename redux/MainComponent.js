@@ -8,6 +8,7 @@ import { authStateChanged } from "../redux/operations";
 
 const MainComponent = () => {
   const userState = useSelector((state) => state.auth.stateChange);
+  console.log("state", userState);
 
   const dispatch = useDispatch();
 
@@ -16,7 +17,6 @@ const MainComponent = () => {
   }, []);
 
   const routing = useRoute(userState);
-
   return (
     <NavigationContainer>
       <View style={styles.container}>{routing}</View>
